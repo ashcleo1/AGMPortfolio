@@ -1258,13 +1258,13 @@
           <div>
             <p style="font-size:9px;letter-spacing:0.14em;color:rgba(255,255,255,0.2);text-transform:uppercase;margin-bottom:6px;">Blender Bombs — Landing Page</p>
             <div class="expand-video">
-              <iframe src="https://player.vimeo.com/video/1188726677?autoplay=0&muted=1&controls=1" allow="autoplay; fullscreen" allowfullscreen></iframe>
+              <iframe src="https://player.vimeo.com/video/1188726677?autoplay=0autoplay=0&muted=1&controls=1muted=1autoplay=0&muted=1&controls=1volume=0autoplay=0&muted=1&controls=1controls=1" allow="autoplay; fullscreen" allowfullscreen></iframe>
             </div>
           </div>
           <div>
             <p style="font-size:9px;letter-spacing:0.14em;color:rgba(255,255,255,0.2);text-transform:uppercase;margin-bottom:6px;">Fanbase — Landing Page</p>
             <div class="expand-video">
-              <iframe src="https://player.vimeo.com/video/1188727680?autoplay=0&muted=1&controls=1" allow="autoplay; fullscreen" allowfullscreen></iframe>
+              <iframe src="https://player.vimeo.com/video/1188727680?autoplay=0autoplay=0&muted=1&controls=1muted=1autoplay=0&muted=1&controls=1volume=0autoplay=0&muted=1&controls=1controls=1" allow="autoplay; fullscreen" allowfullscreen></iframe>
             </div>
           </div>
         </div>
@@ -1288,7 +1288,7 @@
       <div class="work-expand">
         <p class="expand-note">Northern Territory Australia — Brand Video</p>
         <div class="expand-video">
-          <iframe src="https://player.vimeo.com/video/1188726286?autoplay=0&muted=1&controls=1" allow="autoplay; fullscreen" allowfullscreen></iframe>
+          <iframe src="https://player.vimeo.com/video/1188726286?autoplay=0autoplay=0&muted=1&controls=1muted=1autoplay=0&muted=1&controls=1volume=0autoplay=0&muted=1&controls=1controls=1" allow="autoplay; fullscreen" allowfullscreen></iframe>
         </div>
       </div>
 
@@ -1313,13 +1313,13 @@
           <div>
             <p style="font-size:9px;letter-spacing:0.14em;color:rgba(255,255,255,0.2);text-transform:uppercase;margin-bottom:6px;">WhisperWings — Website Redesign</p>
             <div class="expand-video">
-              <iframe src="https://player.vimeo.com/video/1188726132?autoplay=0&muted=1&controls=1" allow="autoplay; fullscreen" allowfullscreen></iframe>
+              <iframe src="https://player.vimeo.com/video/1188726132?autoplay=0autoplay=0&muted=1&controls=1muted=1autoplay=0&muted=1&controls=1volume=0autoplay=0&muted=1&controls=1controls=1" allow="autoplay; fullscreen" allowfullscreen></iframe>
             </div>
           </div>
           <div style="margin-top:2px;">
             <p style="font-size:9px;letter-spacing:0.14em;color:rgba(255,255,255,0.2);text-transform:uppercase;margin-bottom:6px;">WhisperWings — CTV Ad</p>
             <div class="expand-video">
-              <iframe src="https://player.vimeo.com/video/1188726189?autoplay=0&muted=1&controls=1" allow="autoplay; fullscreen" allowfullscreen></iframe>
+              <iframe src="https://player.vimeo.com/video/1188726189?autoplay=0autoplay=0&muted=1&controls=1muted=1autoplay=0&muted=1&controls=1volume=0autoplay=0&muted=1&controls=1controls=1" allow="autoplay; fullscreen" allowfullscreen></iframe>
             </div>
           </div>
         </div>
@@ -1419,11 +1419,22 @@
     const isOpen = item.classList.contains('open');
     document.querySelectorAll('.work-item.open').forEach(el => {
       el.classList.remove('open');
-      el.nextElementSibling.classList.remove('open');
+      if (el.nextElementSibling) el.nextElementSibling.classList.remove('open');
     });
     if (!isOpen) {
       item.classList.add('open');
       expand.classList.add('open');
+      expand.querySelectorAll('iframe').forEach(iframe => {
+        try {
+          const src = iframe.src;
+          if (!src.includes('muted=1')) {
+            iframe.src = src + (src.includes('?') ? '&' : '?') + 'muted=1';
+          }
+          if (iframe.contentWindow) {
+            iframe.contentWindow.postMessage('{"method":"setVolume","value":0}', '*');
+          }
+        } catch(e) {}
+      });
     }
   }
 
